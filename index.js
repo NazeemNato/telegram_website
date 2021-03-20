@@ -8,8 +8,9 @@ const isHex = (hex) => {
     typeof hex === "string" && hex.length === 6 && !isNaN(Number("0x" + hex))
   );
 };
+const token = process.env.TOKEN;
 
-const bot = new TelegramBot("1600543703:AAEiV8gBWyexwchKcIW35153eVyFQ8nbmgI", {
+const bot = new TelegramBot(token, {
   polling: true,
 });
 
@@ -17,9 +18,18 @@ bot.onText(/\/start/, (msg, _) => {
   const chatId = msg.chat.id;
   const username = msg.from.username;
 
-  let url = `http://localhost:8080/@${username}`;
+  let baseUrl = process.env.URL || `http://localhost:8080/@`;
+  let url = baseUrl + username;
 
   let message = `Hola 👋 , @${username}\n\n🎱 Your magic url 👉 ${url}\n\n\n⚠️ NOTE: <i> <b>FIRST OPEN THE URL THEN PLAY</b> </i>🙂`;
+  bot.sendMessage(chatId, message, { parse_mode: "HTML" });
+});
+
+bot.onText(/\/help/, (msg, _) => {
+  const chatId = msg.chat.id;
+
+  let message =
+    "Hello 👋, I can help you to play with magic website.\n\nYou can control me & magic website by sending these commands:\n\n/bg hex color - Change / Update magic website background color\n\n/bodytext  text  - Change / Update magic website body text\n\n💻 Happy playing";
   bot.sendMessage(chatId, message, { parse_mode: "HTML" });
 });
 
