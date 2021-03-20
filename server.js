@@ -16,8 +16,8 @@ app.get("/", (_, res) => {
 
 app.get("/:username", async (req, res) => {
   const { username } = req.params;
-  const user = await User.findOne({ username });
   if (username !== "no_username_home") {
+  const user = await User.findOne({ username });
     if (user) {
       res.render("index", {
         userName: username,
