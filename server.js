@@ -17,25 +17,25 @@ app.get("/", (_, res) => {
 app.get("/:username", async (req, res) => {
   const { username } = req.params;
   if (username !== "no_username_home") {
-  const user = await User.findOne({ username });
+    const user = await User.findOne({ username });
     if (user) {
       res.render("index", {
         userName: username,
         backgroundColor: user.background,
-        bodyText: user.body_text
+        bodyText: { html: user.body_text },
       });
     } else {
       res.render("index", {
         userName: username,
         backgroundColor: undefined,
-        bodyText: undefined
+        bodyText: undefined,
       });
     }
   } else {
     res.render("index", {
       userName: username,
       backgroundColor: undefined,
-      bodyText: undefined
+      bodyText: undefined,
     });
   }
 });
