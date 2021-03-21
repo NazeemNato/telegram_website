@@ -5,19 +5,57 @@
     <script>
       const USERNAME = "<%= userName %>";
       const BACKGROUND = "<%= backgroundColor %>";
-      const BODYTEXT = "<%= JSON.stringify(bodyText); %>"
+      const BODYTEXT = "<%= JSON.stringify(bodyText); %>";
     </script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"
-    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
     <script src="script.js" defer></script>
-    <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <title>Magic Website - Telegram bot</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <!-- HTML Meta Tags -->
+    <title><%= userName %> | Magic Bot</title>
+    <meta
+      name="description"
+      content= "<%= metaDesc %>"
+    />
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://magic-website.nazeemnato.repl.co" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content= "<%= userName %> | Magic Bot"
+    />
+    <meta
+      property="og:description"
+      content= "<%= metaDesc %>"
+    />
+    <meta
+      property="og:image"
+      content="image/meta_image.png"
+    />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="magic-website.nazeemnato.xyz" />
+    <meta property="twitter:url" content="https://magic-website.nazeemnato.repl.co" />
+    <meta
+      name="twitter:title"
+      content= "<%= userName %> | Magic Bot"
+    />
+    <meta
+      name="twitter:description"
+      content= "<%= metaDesc %>"
+    />
+    <meta
+      name="twitter:image"
+      content="image/meta_image.png"
+    />
+
+    <!-- Meta Tags Generated via https://www.opengraph.xyz -->
   </head>
   <body>
-      <div id="container"></div>
+    <div id="container"></div>
   </body>
 </html>
