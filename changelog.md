@@ -1,5 +1,7 @@
 - **1.0.2**
 
+EJS bug fixed
+
 - **1.0.1**
 
 Dynamic support ✅
