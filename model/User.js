@@ -12,10 +12,14 @@ const UserSchema = mongoose.Schema({
     type: String,
     default: "Hola 👋",
   },
+  meta: {
+    type: String,
+    default: "Create a simple single page website with the telegram bot builder. Choose a customizable background color and body content."
+  },
   datetime: {
     type: Date,
     default: Date.now,
-  },
+  }
 });
 
 module.exports = mongoose.model("User", UserSchema);

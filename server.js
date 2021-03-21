@@ -23,12 +23,14 @@ app.get("/:username", async (req, res) => {
         userName: username,
         backgroundColor: user.background,
         bodyText: { html: user.body_text },
+        metaDesc: user.meta
       });
     } else {
       res.render("index", {
         userName: username,
         backgroundColor: undefined,
         bodyText: undefined,
+        metaDesc: "Create a simple single page website with the telegram bot builder. Choose a customizable background color and body content."
       });
     }
   } else {
@@ -36,6 +38,7 @@ app.get("/:username", async (req, res) => {
       userName: username,
       backgroundColor: undefined,
       bodyText: undefined,
+      metaDesc: "Create a simple single page website with the telegram bot builder. Choose a customizable background color and body content."
     });
   }
 });

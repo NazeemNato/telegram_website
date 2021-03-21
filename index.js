@@ -10,6 +10,9 @@ const isHex = (hex) => {
 };
 
 const token = process.env.TOKEN;
+
+const TEXTCOUNT = 160;
+
 mongoose
   .connect(process.env.PRODUCTION_MONGODB, {
     useNewUrlParser: true,
@@ -38,7 +41,7 @@ mongoose
       let baseUrl = process.env.URL || `http://localhost:8080/@`;
       let url = baseUrl + username;
 
-      let message = `Hola 👋 , @${username}\n\n🎱 Your magic url 👉 ${url}\n\n\n⚠️ NOTE: <i> <b>FIRST OPEN THE URL THEN PLAY</b> </i>🙂`;
+      let message = `Hola 👋 , @${username}\n\n🎱 Your magic url 👉 ${url}`;
       bot.sendMessage(chatId, message, { parse_mode: "HTML" });
     });
 
@@ -56,7 +59,7 @@ mongoose
       const chatId = msg.chat.id;
 
       let message =
-        "Hello 👋, I can help you to play with magic website.\n\nYou can control me & magic website by sending these commands:\n\n/bg hex color - Change / Update magic website background color\n\n/bodytext  text  - Change / Update magic website body text\n\n/url - your custom magic url\n\n💻 Happy playing";
+        "Hello 👋, I can help you to play with magic website.\n\nYou can control me & magic website by sending these commands:\n\n/bg <i>hex color</i> - Change / Update magic website background color\n\n<s>/bodytext <i>text</i>  - Change / Update magic website body text</s>\n\n/body <i>content</i> - Change / Update magic website body content\n\n/url - your custom magic url\n\n/meta - change meta description\n\n💻 Happy playing";
       bot.sendMessage(chatId, message, { parse_mode: "HTML" });
     });
 
@@ -88,9 +91,15 @@ mongoose
 
     bot.onText(/\/bodytext (.+)/,async (msg, _) => {
       const chatId = msg.chat.id;
+      let message = "❌ /bodytext <i>text</i> was deprecated in <b>Magic bot 1.0.3</b> . Replaced by /body <i>content</i>";
+      bot.sendMessage(chatId, message,{ parse_mode: "HTML" });
+    });
+
+    bot.onText(/\/body (.+)/,async (msg, _) => {
+      const chatId = msg.chat.id;
       const username = msg.from.username;
 
-      const text = msg.text.replace("/bodytext ", "").trim();
+      const text = msg.text.replace("/body ", "").trim();
 
       // 🤔 https://stackoverflow.com/questions/15241915/how-to-change-css-property-using-javascript
       try {
@@ -108,5 +117,27 @@ mongoose
         bot.sendMessage(chatId, "😭 Something went wrong");
       }
     });
+
+    bot.onText(/\/meta (.+)/,async (msg, _) => {
+      const chatId = msg.chat.id;
+      const username = msg.from.username;
+
+      const text = msg.text.replace("/meta ", "").replace("\n","").trim();
+
+      try {
+        if (text.length <= TEXTCOUNT) {
+          await User.updateOne(
+            { username: `@${username}` },
+            { $set: { meta: text } }
+          );
+          bot.sendMessage(chatId, "Successfully updated meta description ✅");
+        } else {
+          bot.sendMessage(chatId,`❌ Sorry description text is limited up to ${TEXTCOUNT} characters.Your current character count is ${text.length} 🌝`)
+        }
+      } catch (_) {
+        bot.sendMessage(chatId, "😭 Something went wrong");
+      }
+    });
+
   })
   .catch(console.log);
