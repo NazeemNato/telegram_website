@@ -1,6 +1,26 @@
 const socket = io();
 const bodyDiv = document.getElementById("container");
 
+// ref: https://stackoverflow.com/questions/44195322/a-plain-javascript-way-to-decode-html-entities-works-on-both-browsers-and-node
+const decodeHtml = (encodedString) => {
+  let translate_re = /&(nbsp|amp|quot|lt|gt);/g;
+  let translate = {
+    nbsp: " ",
+    amp: "&",
+    quot: '"',
+    lt: "<",
+    gt: ">",
+  };
+  return encodedString
+    .replace(translate_re, (_, entity) => {
+      return translate[entity];
+    })
+    .replace(/&#(\d+);/gi, (_, numStr) => {
+      var num = parseInt(numStr, 10);
+      return String.fromCharCode(num);
+    });
+};
+
 // ref: https://gomakethings.com/dynamically-changing-the-text-color-based-on-background-color-contrast-with-vanilla-js/
 const getContrast = (hexcolor) => {
   if (hexcolor.slice(0, 1) === "#") {
@@ -30,10 +50,19 @@ if (USERNAME === ":no_username_home") {
     "Hey 👋, Please visit website from <a href='http://t.me/some_random_magic_bot'>telegram bot</a>🤖";
 } else {
   if (BACKGROUND && BODYTEXT) {
+    // Color section
     document.body.style.backgroundColor = BACKGROUND;
     bodyDiv.style.color = getContrast(BACKGROUND);
 
-    bodyDiv.innerHTML = BODYTEXT;
+    // Text
+    let decode = decodeHtml(BODYTEXT);
+    // let regex = /^\{"html"-" \}\}$/i;
+    // console.log(regex.test(decode))
+    // console.log(decode)
+    let html = decode.replace('{"html":"','').replace('"}','').trim()
+    bodyDiv.innerHTML = html;
+
+    // Socket
     socket.on("message", (msg) => {
       if (msg.username === USERNAME) {
         if (msg.type === "background") {
